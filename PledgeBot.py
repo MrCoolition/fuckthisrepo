@@ -9,11 +9,11 @@ import base64
 load_dotenv()
 
 # Database connection details
-DB_HOST = os.getenv("AIVEN_HOST")
-DB_PORT = os.getenv("AIVEN_PORT")
-DB_NAME = os.getenv("AIVEN_DB")
-DB_USER = os.getenv("AIVEN_USER")
-DB_PASS = os.getenv("AIVEN_PASSWORD")
+DB_HOST = st.secrets["database"]["AIVEN_HOST"]
+DB_PORT = st.secrets["database"]["AIVEN_PORT"]
+DB_NAME = st.secrets["database"]["AIVEN_DB"]
+DB_USER = st.secrets["database"]["AIVEN_USER"]
+DB_PASS = st.secrets["database"]["AIVEN_PASSWORD"]
 
 def fetch_owners():
     query = "SELECT owner_id, owner_name FROM pledgegtd.owners"
