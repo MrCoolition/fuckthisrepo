@@ -17,19 +17,26 @@ DB_PASS = os.getenv("AIVEN_PASSWORD")
 
 def fetch_owners():
     query = "SELECT owner_id, owner_name FROM pledgegtd.owners"
-    conn = psycopg2.connect(
-        host=DB_HOST,
-        port=DB_PORT,
-        dbname=DB_NAME,
-        user=DB_USER,
-        password=DB_PASS
-    )
-    cur = conn.cursor()
-    cur.execute(query)
-    owners = cur.fetchall()
-    cur.close()
-    conn.close()
-    return owners
+    try:
+        conn = psycopg2.connect(
+            host=DB_HOST,
+            port=DB_PORT,
+            dbname=DB_NAME,
+            user=DB_USER,
+            password=DB_PASS,
+            sslmode="require"
+        )
+        cur = conn.cursor()
+        cur.execute(query)
+        owners = cur.fetchall()
+        cur.close()
+        conn.close()
+        return owners
+    except psycopg2.OperationalError as e:
+        st.error(f"Database connection failed: {e}")
+    except Exception as e:
+        st.error(f"An error occurred: {e}")
+
 
 def insert_owner(name, email):
     query = """
